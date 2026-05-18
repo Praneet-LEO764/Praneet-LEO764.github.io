@@ -1,28 +1,45 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark" data-lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Praneet Kumar Patra</title>
 <style>
   *{margin:0;padding:0;box-sizing:border-box}
-  :root{
-    --bg:#0a0a0f;--bg2:#111118;--bg3:#1a1a24;
+  [data-theme="dark"]{
+    --bg:#0a0a0f;--bg2:#111118;
     --accent:#7c6ff7;--accent2:#a78bfa;--accent3:#06d6a0;
-    --text:#e8e8f0;--text2:#9090a8;--border:rgba(124,111,247,0.2);
-    --card:rgba(26,26,36,0.8);
+    --text:#e8e8f0;--text2:#9090a8;
+    --border:rgba(124,111,247,0.2);--card:rgba(26,26,36,0.8);
+    --grid-dot:rgba(124,111,247,.07);
   }
-  body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,sans-serif;line-height:1.6}
-  nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(10,10,15,0.88);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 2rem}
+  [data-theme="light"]{
+    --bg:#f5f5fa;--bg2:#eaeaf2;
+    --accent:#5b52e0;--accent2:#6c63ff;--accent3:#059669;
+    --text:#1a1a2e;--text2:#555570;
+    --border:rgba(91,82,224,0.2);--card:rgba(255,255,255,0.9);
+    --grid-dot:rgba(91,82,224,.06);
+  }
+  body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,sans-serif;line-height:1.6;transition:background .3s,color .3s}
+  nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(10,10,15,0.88);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 2rem;transition:background .3s}
+  [data-theme="light"] nav{background:rgba(245,245,250,0.88)}
   .nav-inner{max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:60px}
   .logo{font-size:1rem;font-weight:700;color:var(--accent2);letter-spacing:.5px}
   .logo span{color:var(--accent3)}
-  .nav-links{display:flex;gap:1.75rem;list-style:none}
+  .nav-right{display:flex;align-items:center;gap:1rem}
+  .nav-links{display:flex;gap:1.5rem;list-style:none}
   .nav-links button{background:none;border:none;color:var(--text2);font-size:.88rem;cursor:pointer;transition:color .2s;font-family:inherit}
   .nav-links button:hover{color:var(--accent2)}
+  .nav-controls{display:flex;align-items:center;gap:.5rem}
+  .ctrl-btn{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:5px 12px;cursor:pointer;font-size:.78rem;font-weight:600;transition:all .2s;font-family:inherit;color:var(--text2)}
+  .ctrl-btn:hover{border-color:var(--accent2);color:var(--accent2)}
+  .ctrl-btn.active{background:rgba(124,111,247,0.15);border-color:var(--accent);color:var(--accent2)}
+  [data-theme="light"] .ctrl-btn.active{background:rgba(91,82,224,0.1)}
+  .divider{color:var(--border);font-size:.9rem;user-select:none}
   section{padding:100px 2rem 60px;max-width:1100px;margin:0 auto}
   #home{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding-top:130px}
   .hero-tag{display:inline-block;background:rgba(124,111,247,0.12);border:1px solid var(--border);color:var(--accent2);font-size:.78rem;padding:4px 14px;border-radius:20px;margin-bottom:1.5rem;letter-spacing:1px;text-transform:uppercase}
+  [data-theme="light"] .hero-tag{background:rgba(91,82,224,0.08)}
   .hero-name{font-size:clamp(2.2rem,5.5vw,4rem);font-weight:800;line-height:1.1;margin-bottom:.75rem}
   .hero-name .hl{background:linear-gradient(135deg,var(--accent),var(--accent3));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
   .hero-affil{font-size:.9rem;color:var(--text2);margin-bottom:.5rem}
@@ -34,8 +51,10 @@
   .btn-primary:hover{background:var(--accent2);transform:translateY(-2px)}
   .btn-outline{background:transparent;color:var(--accent2);border:1px solid var(--border);text-decoration:none;display:inline-block}
   .btn-outline:hover{background:rgba(124,111,247,0.1);transform:translateY(-2px)}
+  [data-theme="light"] .btn-outline:hover{background:rgba(91,82,224,0.08)}
   .hero-pills{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:2rem}
   .pill{background:rgba(6,214,160,0.08);border:1px solid rgba(6,214,160,0.2);color:var(--accent3);font-size:.75rem;padding:4px 12px;border-radius:20px}
+  [data-theme="light"] .pill{background:rgba(5,150,105,0.08);border-color:rgba(5,150,105,0.2)}
   .scroll-hint{margin-top:3.5rem;display:flex;align-items:center;gap:.75rem;color:var(--text2);font-size:.82rem}
   .dot{width:7px;height:7px;background:var(--accent3);border-radius:50%;animation:pulse 2s infinite}
   @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(1.4)}}
@@ -43,7 +62,7 @@
   .sec-title{font-size:1.9rem;font-weight:700;margin-bottom:.4rem}
   .sec-sub{color:var(--text2);font-size:.92rem;max-width:540px;margin-bottom:2.5rem}
   .area-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1.25rem;margin-bottom:3rem}
-  .a-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.4rem;transition:border-color .2s,transform .2s}
+  .a-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.4rem;transition:border-color .2s,transform .2s,background .3s}
   .a-card:hover{border-color:var(--accent);transform:translateY(-3px)}
   .a-icon{font-size:1.6rem;margin-bottom:.75rem}
   .a-card h3{font-size:.98rem;font-weight:600;margin-bottom:.4rem}
@@ -52,12 +71,14 @@
   .papers-tabs{display:flex;gap:.5rem;margin-bottom:1.5rem;flex-wrap:wrap}
   .ptab{background:transparent;border:1px solid var(--border);color:var(--text2);padding:6px 16px;border-radius:20px;font-size:.8rem;cursor:pointer;transition:all .2s;font-family:inherit}
   .ptab.active{background:rgba(124,111,247,0.15);border-color:var(--accent);color:var(--accent2)}
+  [data-theme="light"] .ptab.active{background:rgba(91,82,224,0.1)}
   .paper-list{display:flex;flex-direction:column;gap:.9rem}
-  .paper{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.25rem 1.5rem;display:flex;gap:1rem;align-items:flex-start;transition:border-color .2s}
+  .paper{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.25rem 1.5rem;display:flex;gap:1rem;align-items:flex-start;transition:border-color .2s,background .3s}
   .paper:hover{border-color:rgba(124,111,247,0.5)}
   .paper-badge{font-size:.72rem;font-weight:700;padding:3px 10px;border-radius:6px;white-space:nowrap;margin-top:3px;flex-shrink:0}
   .badge-arxiv{background:rgba(239,100,30,.15);color:#f4845f}
-  .badge-sub{background:rgba(251,191,36,.12);color:#fbbf24}
+  .badge-sub{background:rgba(251,191,36,.12);color:#d97706}
+  [data-theme="dark"] .badge-sub{color:#fbbf24}
   .badge-wip{background:rgba(124,111,247,.15);color:var(--accent2)}
   .paper-title{font-size:.93rem;font-weight:600;margin-bottom:.3rem;line-height:1.4}
   .paper-authors{font-size:.8rem;color:var(--text2);margin-bottom:.35rem}
@@ -75,19 +96,18 @@
   .stat-emo{font-size:2.5rem;margin-bottom:.9rem;display:block}
   .stat-val{font-size:2.5rem;font-weight:800;line-height:1;margin-bottom:.2rem}
   .stat-card.bench .stat-val{color:#f87171}
-  .stat-card.brawl .stat-val{color:#fbbf24}
+  .stat-card.brawl .stat-val{color:#f59e0b}
   .stat-card.duo .stat-val{color:var(--accent3)}
   .stat-lbl{font-size:.83rem;color:var(--text2);margin-bottom:.8rem}
-  .stat-badge{display:inline-block;padding:3px 12px;border-radius:20px;font-size:.73rem;font-weight:600}
-  .stat-card.duo .stat-badge{background:rgba(6,214,160,.12);color:var(--accent3)}
-  .bar-wrap{margin-top:1.1rem;background:rgba(255,255,255,.06);border-radius:20px;height:5px;overflow:hidden}
+  .stat-badge{display:inline-block;padding:3px 12px;border-radius:20px;font-size:.73rem;font-weight:600;background:rgba(6,214,160,.12);color:var(--accent3)}
+  .bar-wrap{margin-top:1.1rem;background:rgba(128,128,128,.12);border-radius:20px;height:5px;overflow:hidden}
   .bar{height:100%;border-radius:20px;width:0%;transition:width 1.3s cubic-bezier(.4,0,.2,1)}
   .stat-card.bench .bar{background:#f87171}
-  .stat-card.brawl .bar{background:#fbbf24}
+  .stat-card.brawl .bar{background:#f59e0b}
   .stat-card.duo .bar{background:var(--accent3)}
-  .fun-note{margin-top:2.5rem;background:var(--card);border:1px dashed var(--border);border-radius:12px;padding:1.1rem 1.5rem;font-size:.86rem;color:var(--text2);text-align:center}
+  .fun-note{margin-top:2.5rem;background:var(--card);border:1px dashed var(--border);border-radius:12px;padding:1.1rem 1.5rem;font-size:.86rem;color:var(--text2);text-align:center;transition:background .3s}
   .fun-note span{color:var(--accent2);font-weight:600}
-  .about-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:2.25rem;display:flex;flex-wrap:wrap;gap:2rem;align-items:flex-start}
+  .about-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:2.25rem;display:flex;flex-wrap:wrap;gap:2rem;align-items:flex-start;transition:background .3s}
   .avatar{width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent3));display:flex;align-items:center;justify-content:center;font-size:1.7rem;font-weight:800;color:#fff;flex-shrink:0}
   .about-body h2{font-size:1.3rem;font-weight:700;margin-bottom:.2rem}
   .about-affil{font-size:.85rem;color:var(--accent3);margin-bottom:.75rem}
@@ -97,12 +117,13 @@
   .about-links a:hover{border-color:var(--accent2)}
   .awards{margin-top:2rem}
   .award-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:.9rem;margin-top:1rem}
-  .award{background:rgba(124,111,247,0.07);border:1px solid var(--border);border-radius:10px;padding:.9rem 1rem;font-size:.84rem}
+  .award{background:rgba(124,111,247,0.07);border:1px solid var(--border);border-radius:10px;padding:.9rem 1rem}
+  [data-theme="light"] .award{background:rgba(91,82,224,0.05)}
   .award strong{display:block;color:var(--accent2);margin-bottom:.2rem;font-size:.85rem}
   .award span{color:var(--text2);font-size:.8rem}
-  .bg-grid{position:fixed;inset:0;background-image:radial-gradient(rgba(124,111,247,.07) 1px,transparent 1px);background-size:32px 32px;pointer-events:none;z-index:0}
+  .bg-grid{position:fixed;inset:0;background-image:radial-gradient(var(--grid-dot) 1px,transparent 1px);background-size:32px 32px;pointer-events:none;z-index:0;transition:background .3s}
   section,nav,footer{position:relative;z-index:1}
-  footer{background:var(--bg2);border-top:1px solid var(--border);text-align:center;padding:1.75rem;font-size:.8rem;color:var(--text2)}
+  footer{background:var(--bg2);border-top:1px solid var(--border);text-align:center;padding:1.75rem;font-size:.8rem;color:var(--text2);transition:background .3s}
 </style>
 </head>
 <body>
@@ -111,52 +132,61 @@
 <nav>
   <div class="nav-inner">
     <div class="logo">praneet<span>.</span>research</div>
-    <ul class="nav-links">
-      <li><button id="nav-home">Home</button></li>
-      <li><button id="nav-research">Research</button></li>
-      <li><button id="nav-stats">Fun Stats</button></li>
-      <li><button id="nav-about">About</button></li>
-    </ul>
+    <div class="nav-right">
+      <ul class="nav-links">
+        <li><button class="nav-btn" data-section="home" data-en="Home" data-fr="Accueil">Home</button></li>
+        <li><button class="nav-btn" data-section="research" data-en="Research" data-fr="Recherche">Research</button></li>
+        <li><button class="nav-btn" data-section="stats" data-en="Fun Stats" data-fr="Stats Amusantes">Fun Stats</button></li>
+        <li><button class="nav-btn" data-section="about" data-en="About" data-fr="À Propos">About</button></li>
+      </ul>
+      <div class="nav-controls">
+        <button class="ctrl-btn active" id="btn-en">🇬🇧 EN</button>
+        <button class="ctrl-btn" id="btn-fr">🇫🇷 FR</button>
+        <span class="divider">|</span>
+        <button class="ctrl-btn active" id="btn-dark">🌙</button>
+        <button class="ctrl-btn" id="btn-light">☀️</button>
+      </div>
+    </div>
   </div>
 </nav>
 
 <section id="home">
-  <div class="hero-tag">🔬 Algorithms &amp; Graph Theory</div>
-  <h1 class="hero-name">Hi, I'm <span class="hl">Praneet Kumar Patra</span></h1>
-  <div class="hero-affil">BS-MS Student · <span>IISER Pune</span> · CGPA 9.3/10</div>
-  <p class="hero-sub">I work on graph algorithms, parameterized complexity, and approximation algorithms, designing efficient solutions to combinatorially hard problems.</p>
+  <div class="hero-tag" data-en="🔬 Algorithms &amp; Graph Theory" data-fr="🔬 Algorithmes &amp; Théorie des Graphes">🔬 Algorithms &amp; Graph Theory</div>
+  <h1 class="hero-name"><span data-en="Hi, I'm " data-fr="Bonjour, je suis ">Hi, I'm </span><span class="hl">Praneet Kumar Patra</span></h1>
+  <div class="hero-affil"><span data-en="BS-MS Student · " data-fr="Étudiant BS-MS · ">BS-MS Student · </span><span>IISER Pune</span></div>
+  <p class="hero-sub" data-en="I work on graph algorithms, parameterized complexity, and approximation algorithms, designing efficient solutions to combinatorially hard problems." data-fr="Je travaille sur les algorithmes de graphes, la complexité paramétrée et les algorithmes d'approximation, en concevant des solutions efficaces pour des problèmes combinatoires difficiles.">I work on graph algorithms, parameterized complexity, and approximation algorithms, designing efficient solutions to combinatorially hard problems.</p>
   <div class="hero-btns">
-    <button class="btn btn-primary" id="btn-research">View Research</button>
-    <button class="btn btn-outline" id="btn-stats">My Fun Stats ✨</button>
+    <button class="btn btn-primary" id="btn-research" data-en="View Research" data-fr="Voir mes Recherches">View Research</button>
+    <button class="btn btn-outline" id="btn-stats" data-en="My Fun Stats ✨" data-fr="Mes Stats Amusantes ✨">My Fun Stats ✨</button>
     <a href="https://scholar.google.com/citations?user=sUsEQAQAAAAJ&hl=en" target="_blank" class="btn btn-outline">Google Scholar ↗</a>
   </div>
   <div class="hero-pills">
-    <span class="pill">Graph Theory</span>
-    <span class="pill">Parameterized Algorithms</span>
-    <span class="pill">Approximation Algorithms</span>
-    <span class="pill">Combinatorial Optimization</span>
-    <span class="pill">Complexity Theory</span>
+    <span class="pill" data-en="Graph Theory" data-fr="Théorie des Graphes">Graph Theory</span>
+    <span class="pill" data-en="Parameterized Algorithms" data-fr="Algorithmes Paramétrés">Parameterized Algorithms</span>
+    <span class="pill" data-en="Approximation Algorithms" data-fr="Algorithmes d'Approximation">Approximation Algorithms</span>
+    <span class="pill" data-en="Combinatorial Optimization" data-fr="Optimisation Combinatoire">Combinatorial Optimization</span>
+    <span class="pill" data-en="Complexity Theory" data-fr="Théorie de la Complexité">Complexity Theory</span>
   </div>
-  <div class="scroll-hint"><span class="dot"></span>Scroll to explore</div>
+  <div class="scroll-hint"><span class="dot"></span><span data-en="Scroll to explore" data-fr="Défiler pour explorer">Scroll to explore</span></div>
 </section>
 
 <section id="research">
-  <div class="sec-tag">What I work on</div>
-  <h2 class="sec-title">Research Areas</h2>
-  <p class="sec-sub">Exploring the algorithmic and structural properties of graphs, with a focus on tractability and hardness.</p>
+  <div class="sec-tag" data-en="What I work on" data-fr="Ce sur quoi je travaille">What I work on</div>
+  <h2 class="sec-title" data-en="Research Areas" data-fr="Domaines de Recherche">Research Areas</h2>
+  <p class="sec-sub" data-en="Exploring the algorithmic and structural properties of graphs, with a focus on tractability and hardness." data-fr="Explorer les propriétés algorithmiques et structurelles des graphes, en mettant l'accent sur la tractabilité et la difficulté.">Exploring the algorithmic and structural properties of graphs, with a focus on tractability and hardness.</p>
   <div class="area-grid">
-    <div class="a-card"><div class="a-icon">🕸️</div><h3>Graph Algorithms</h3><p>Algorithmic problems on graphs including identifying codes, vertex splitting, and graph modification problems.</p></div>
-    <div class="a-card"><div class="a-icon">⚙️</div><h3>Parameterized Algorithms</h3><p>FPT and XP algorithms for NP-hard problems, including biclique contraction (O*(4.02^k)) and identifying codes.</p></div>
-    <div class="a-card"><div class="a-icon">🧩</div><h3>Approximation Algorithms</h3><p>Near-optimal algorithms with provable guarantees, recently constructing XP approximations for fair division on graphs.</p></div>
-    <div class="a-card"><div class="a-icon">📐</div><h3>Combinatorial Optimization</h3><p>Scheduling, fair allocation, and pursuit games, linking structural graph properties to optimization hardness.</p></div>
+    <div class="a-card"><div class="a-icon">🕸️</div><h3 data-en="Graph Algorithms" data-fr="Algorithmes de Graphes">Graph Algorithms</h3><p data-en="Algorithmic problems on graphs including identifying codes, vertex splitting, and graph modification problems." data-fr="Problèmes algorithmiques sur les graphes, notamment les codes identifiants, la scission de sommets et les problèmes de modification de graphes.">Algorithmic problems on graphs including identifying codes, vertex splitting, and graph modification problems.</p></div>
+    <div class="a-card"><div class="a-icon">⚙️</div><h3 data-en="Parameterized Algorithms" data-fr="Algorithmes Paramétrés">Parameterized Algorithms</h3><p data-en="FPT and XP algorithms for NP-hard problems, including biclique contraction (O*(4.02^k)) and identifying codes." data-fr="Algorithmes FPT et XP pour les problèmes NP-difficiles, notamment la contraction de biclique (O*(4.02^k)) et les codes identifiants.">FPT and XP algorithms for NP-hard problems, including biclique contraction (O*(4.02^k)) and identifying codes.</p></div>
+    <div class="a-card"><div class="a-icon">🧩</div><h3 data-en="Approximation Algorithms" data-fr="Algorithmes d'Approximation">Approximation Algorithms</h3><p data-en="Near-optimal algorithms with provable guarantees, recently constructing XP approximations for fair division on graphs." data-fr="Algorithmes quasi-optimaux avec des garanties prouvables, récemment la construction d'approximations XP pour le partage équitable sur les graphes.">Near-optimal algorithms with provable guarantees, recently constructing XP approximations for fair division on graphs.</p></div>
+    <div class="a-card"><div class="a-icon">📐</div><h3 data-en="Combinatorial Optimization" data-fr="Optimisation Combinatoire">Combinatorial Optimization</h3><p data-en="Scheduling, fair allocation, and pursuit games, linking structural graph properties to optimization hardness." data-fr="Ordonnancement, allocation équitable et jeux de poursuite, reliant les propriétés structurelles des graphes à la difficulté d'optimisation.">Scheduling, fair allocation, and pursuit games, linking structural graph properties to optimization hardness.</p></div>
   </div>
   <div class="papers-section">
-    <div class="sec-tag">Publications &amp; preprints</div>
+    <div class="sec-tag" data-en="Publications &amp; preprints" data-fr="Publications &amp; prépublications">Publications &amp; preprints</div>
     <div class="papers-tabs">
-      <button class="ptab active" data-filter="all">All</button>
-      <button class="ptab" data-filter="arxiv">On arXiv</button>
-      <button class="ptab" data-filter="sub">Submitted</button>
-      <button class="ptab" data-filter="wip">In Preparation</button>
+      <button class="ptab active" data-filter="all" data-en="All" data-fr="Tout">All</button>
+      <button class="ptab" data-filter="arxiv" data-en="On arXiv" data-fr="Sur arXiv">On arXiv</button>
+      <button class="ptab" data-filter="sub" data-en="Submitted" data-fr="Soumis">Submitted</button>
+      <button class="ptab" data-filter="wip" data-en="In Preparation" data-fr="En Préparation">In Preparation</button>
     </div>
     <div class="paper-list" id="paperList">
       <div class="paper" data-cat="arxiv">
@@ -168,14 +198,14 @@
         </div>
       </div>
       <div class="paper" data-cat="sub">
-        <span class="paper-badge badge-sub">Submitted</span>
+        <span class="paper-badge badge-sub" data-en="Submitted" data-fr="Soumis">Submitted</span>
         <div>
           <div class="paper-title">Greedy meets DP on Coupled Task Scheduling</div>
           <div class="paper-authors">N. Banerjee, P.K. Patra, A. Sahu</div>
         </div>
       </div>
       <div class="paper" data-cat="wip">
-        <span class="paper-badge badge-wip">In Prep</span>
+        <span class="paper-badge badge-wip" data-en="In Prep" data-fr="En Prép.">In Prep</span>
         <div>
           <div class="paper-title">Inclusive and Exclusive Vertex Splitting into Specific Graph Classes: NP Hardness and Algorithms</div>
           <div class="paper-authors">A. Gaikwad, H. Kumar, S. Padmapriya, P.K. Patra, H. Sanklecha, S. Maity</div>
@@ -183,14 +213,14 @@
         </div>
       </div>
       <div class="paper" data-cat="wip">
-        <span class="paper-badge badge-wip">In Prep</span>
+        <span class="paper-badge badge-wip" data-en="In Prep" data-fr="En Prép.">In Prep</span>
         <div>
           <div class="paper-title">Faster Biclique Contraction</div>
           <div class="paper-authors">A. Agrawal, P.K. Patra, V. Sharma</div>
         </div>
       </div>
       <div class="paper" data-cat="wip">
-        <span class="paper-badge badge-wip">In Prep</span>
+        <span class="paper-badge badge-wip" data-en="In Prep" data-fr="En Prép.">In Prep</span>
         <div>
           <div class="paper-title">Efficient Identification in Networks: FPT and Limitations</div>
           <div class="paper-authors">A. Banik, P.K. Patra, A.A. Rescigno, A. Sahu</div>
@@ -201,77 +231,107 @@
 </section>
 
 <section id="stats">
-  <div class="sec-tag">Beyond the whiteboard</div>
-  <h2 class="sec-title">My Fun Stats 🏆</h2>
-  <p class="sec-sub">Because a researcher is more than their papers. Here's what else I've been grinding.</p>
+  <div class="sec-tag" data-en="Beyond the whiteboard" data-fr="Au-delà du tableau blanc">Beyond the whiteboard</div>
+  <h2 class="sec-title" data-en="My Fun Stats 🏆" data-fr="Mes Stats Amusantes 🏆">My Fun Stats 🏆</h2>
+  <p class="sec-sub" data-en="Because a researcher is more than their papers. Here's what else I've been grinding." data-fr="Parce qu'un chercheur est plus que ses articles. Voici ce sur quoi je travaille aussi.">Because a researcher is more than their papers. Here's what else I've been grinding.</p>
   <div class="stats-grid">
     <div class="stat-card bench">
       <span class="stat-emo">🏋️</span>
       <div class="stat-val" id="benchVal">0</div>
-      <div class="stat-lbl">Bench Press PR (kg)</div>
+      <div class="stat-lbl" data-en="Bench Press PR (kg)" data-fr="Record Développé Couché (kg)">Bench Press PR (kg)</div>
       <div class="bar-wrap"><div class="bar" id="benchBar"></div></div>
     </div>
     <div class="stat-card brawl">
       <span class="stat-emo">🎮</span>
       <div class="stat-val" id="brawlVal">0</div>
-      <div class="stat-lbl">Brawl Stars Trophies</div>
+      <div class="stat-lbl" data-en="Brawl Stars Trophies" data-fr="Trophées Brawl Stars">Brawl Stars Trophies</div>
       <div class="bar-wrap"><div class="bar" id="brawlBar"></div></div>
     </div>
     <div class="stat-card duo">
       <span class="stat-emo">🦜</span>
       <div class="stat-val" id="duoVal">0</div>
-      <div class="stat-lbl">Duolingo French — Level</div>
-      <div class="stat-badge">🇫🇷 Beginner</div>
+      <div class="stat-lbl" data-en="Duolingo French — Level" data-fr="Duolingo Français — Niveau">Duolingo French — Level</div>
+      <div class="stat-badge">🇫🇷 <span data-en="Beginner" data-fr="Débutant">Beginner</span></div>
       <div class="bar-wrap"><div class="bar" id="duoBar"></div></div>
     </div>
   </div>
-  <div class="fun-note">Powering the brain with iron and <span>progressive overload</span>. The Brawl Stars grind is purely for <span>graph-theoretic strategy research</span>. Obviously. 🙃</div>
+  <div class="fun-note"><span data-en="Powering the brain with iron and " data-fr="Alimenter le cerveau avec du fer et ">Powering the brain with iron and </span><span class="accent-span" data-en="progressive overload" data-fr="surcharge progressive">progressive overload</span><span data-en=". The Brawl Stars grind is purely for " data-fr=". Le grinding Brawl Stars est purement pour la ">. The Brawl Stars grind is purely for </span><span class="accent-span" data-en="graph-theoretic strategy research" data-fr="recherche stratégique en théorie des graphes">graph-theoretic strategy research</span><span>. Obviously. 🙃</span></div>
 </section>
 
 <section id="about" style="min-height:auto;padding-bottom:80px">
-  <div class="sec-tag" style="margin-bottom:.4rem">Who I am</div>
-  <h2 class="sec-title" style="margin-bottom:2rem">About Me</h2>
+  <div class="sec-tag" style="margin-bottom:.4rem" data-en="Who I am" data-fr="Qui je suis">Who I am</div>
+  <h2 class="sec-title" style="margin-bottom:2rem" data-en="About Me" data-fr="À Propos de Moi">About Me</h2>
   <div class="about-card">
     <div class="avatar">PK</div>
     <div class="about-body">
       <h2>Praneet Kumar Patra</h2>
-      <div class="about-affil">BS-MS, IISER Pune · Graduating May 2026</div>
-      <p>I'm a 5th year (about to be unemployed for a duration of 4 months till I start my PhD) student at IISER Pune, the place that gave me better than expected friends, professors and connections. In life, I am interested in Gym, Graph algorithms, Social choice, Approximation algorithm, occasional runs and movie binging. Collaborating with me is a fun experience (or so I hope). I aim to collaborate with a lot of researchers before my PhD ends. Apart from academics type academics, I sometime involve myself in reading sci fi (mostly) and non-fictions, sometimes, I find enough courage to put my words on a sheet (mostly electronic), the ones I feel fit will get a dedicated place in this site. To end, (importantly) the code for this site has been prepared by claude.)</p>
+      <div class="about-affil" data-en="5th Year BS-MS · IISER Pune · PhD incoming" data-fr="5ème année BS-MS · IISER Pune · Doctorat à venir">5th Year BS-MS · IISER Pune · PhD incoming</div>
+      <p data-en="I'm a 5th year student at IISER Pune — soon to be happily unemployed for about 4 months before my PhD begins. IISER gave me better-than-expected friends, professors, and connections, and I'm grateful for all of it. In life, I'm interested in the gym, graph algorithms, social choice, approximation algorithms, occasional runs, and movie binging. Collaborating with me is a fun experience (or so I hope), and I aim to work with a lot of researchers before my PhD ends. Beyond the academic kind of academics, I find myself reading sci-fi (mostly) and non-fiction, and sometimes muster enough courage to put words on a page — the ones that feel right will find a dedicated home on this site. Oh, and (importantly) this site was built by Claude." data-fr="Je suis étudiant en 5ème année à l'IISER Pune — bientôt heureusement au chômage pendant environ 4 mois avant de commencer mon doctorat. L'IISER m'a offert des amis, des professeurs et des connexions bien au-delà de mes espérances. Dans la vie, je m'intéresse à la salle de sport, aux algorithmes de graphes, au choix social, aux algorithmes d'approximation, aux courses occasionnelles et aux marathons de films. Collaborer avec moi est une expérience amusante (du moins je l'espère), et j'aspire à travailler avec de nombreux chercheurs avant la fin de mon doctorat. En dehors des études académiques au sens classique, je lis de la science-fiction (surtout) et des non-fictions, et parfois je rassemble assez de courage pour mettre des mots sur une page — ceux qui me semblent justes trouveront une place dédiée sur ce site. Et (point important) ce site a été conçu par Claude.">I'm a 5th year student at IISER Pune — soon to be happily unemployed for about 4 months before my PhD begins. IISER gave me better-than-expected friends, professors, and connections, and I'm grateful for all of it. In life, I'm interested in the gym, graph algorithms, social choice, approximation algorithms, occasional runs, and movie binging. Collaborating with me is a fun experience (or so I hope), and I aim to work with a lot of researchers before my PhD ends. Beyond the academic kind of academics, I find myself reading sci-fi (mostly) and non-fiction, and sometimes muster enough courage to put words on a page — the ones that feel right will find a dedicated home on this site. Oh, and (importantly) this site was built by Claude.</p>
       <div class="about-links">
         <a href="https://scholar.google.com/citations?user=sUsEQAQAAAAJ&hl=en" target="_blank">Google Scholar ↗</a>
-        <a href="https://sites.google.com/view/algotalk/home" target="_blank">Algo Talk Series ↗</a>
+        <a href="https://sites.google.com/view/algotalk/home" target="_blank" data-en="Algo Talk Series ↗" data-fr="Série de Conférences ↗">Algo Talk Series ↗</a>
         <a href="https://youtube.com/@epsilondelta_873" target="_blank">YouTube ↗</a>
-        <a href="mailto:praneet.kumar.patra@students.iiserpune.ac.in">Email ↗</a>
+        <a href="mailto:praneet.kumar.patra@students.iiserpune.ac.in" data-en="Email ↗" data-fr="Courriel ↗">Email ↗</a>
       </div>
     </div>
   </div>
   <div class="awards">
-    <div class="sec-tag" style="margin-bottom:.5rem">Fellowships &amp; honours</div>
+    <div class="sec-tag" style="margin-bottom:.5rem" data-en="Fellowships &amp; honours" data-fr="Bourses &amp; distinctions">Fellowships &amp; honours</div>
     <div class="award-grid">
-      <div class="award"><strong>Eiffel Scholarship</strong><span>Campus France</span></div>
-      <div class="award"><strong>DST-Inspire Fellowship</strong><span>2021 to 2026</span></div>
-      <div class="award"><strong>Infosys Scholarship</strong><span>2023 and 2024 (high GPA)</span></div>
-      <div class="award"><strong>SFP, IIT Madras</strong><span>Summer 2024</span></div>
-      <div class="award"><strong>AAAI 2026 PC Member</strong><span>Reviewing responsibility</span></div>
-      <div class="award"><strong>JEE Advanced AIR 3444</strong><span>National competitive exam</span></div>
-      <div class="award"><strong>NEST AIR 82</strong><span>Top competitive exam score</span></div>
+      <div class="award"><strong>Eiffel Scholarship</strong><span data-en="Campus France" data-fr="Campus France">Campus France</span></div>
+      <div class="award"><strong>DST-Inspire Fellowship</strong><span data-en="2021 to 2026" data-fr="2021 à 2026">2021 to 2026</span></div>
+      <div class="award"><strong>Infosys Scholarship</strong><span data-en="2023 and 2024 (high GPA)" data-fr="2023 et 2024 (excellente moyenne)">2023 and 2024 (high GPA)</span></div>
+      <div class="award"><strong>SFP, IIT Madras</strong><span data-en="Summer 2024" data-fr="Été 2024">Summer 2024</span></div>
+      <div class="award"><strong>AAAI 2026 PC Member</strong><span data-en="Reviewing responsibility" data-fr="Responsabilité de révision">Reviewing responsibility</span></div>
+      <div class="award"><strong>JEE Advanced AIR 3444</strong><span data-en="National competitive exam" data-fr="Concours national">National competitive exam</span></div>
+      <div class="award"><strong>NEST AIR 82</strong><span data-en="Top competitive exam score" data-fr="Score d'examen de haut niveau">Top competitive exam score</span></div>
     </div>
   </div>
 </section>
 
-<footer>Praneet Kumar Patra · IISER Pune · <span style="color:var(--accent2)">praneet.research</span></footer>
+<footer><span data-en="Praneet Kumar Patra · IISER Pune · " data-fr="Praneet Kumar Patra · IISER Pune · ">Praneet Kumar Patra · IISER Pune · </span><span style="color:var(--accent2)">praneet.research</span></footer>
 
 <script>
 (function() {
+  var html = document.documentElement;
+  var currentLang = 'en';
+
+  function applyLang(lang) {
+    currentLang = lang;
+    html.setAttribute('data-lang', lang);
+    document.querySelectorAll('[data-' + lang + ']').forEach(function(el) {
+      var val = el.getAttribute('data-' + lang);
+      if (el.tagName === 'INPUT' || el.tagName === 'BUTTON' || el.tagName === 'TEXTAREA') {
+        el.value = val;
+      } else {
+        el.innerHTML = val;
+      }
+    });
+    document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+    document.getElementById('btn-fr').classList.toggle('active', lang === 'fr');
+  }
+
+  document.getElementById('btn-en').addEventListener('click', function() { applyLang('en'); });
+  document.getElementById('btn-fr').addEventListener('click', function() { applyLang('fr'); });
+
+  var isDark = true;
+  function setTheme(dark) {
+    isDark = dark;
+    html.setAttribute('data-theme', dark ? 'dark' : 'light');
+    document.getElementById('btn-dark').classList.toggle('active', dark);
+    document.getElementById('btn-light').classList.toggle('active', !dark);
+  }
+  document.getElementById('btn-dark').addEventListener('click', function() { setTheme(true); });
+  document.getElementById('btn-light').addEventListener('click', function() { setTheme(false); });
+
   function goTo(id) {
     var el = document.getElementById(id);
     if (el) el.scrollIntoView({behavior: 'smooth'});
   }
 
-  document.getElementById('nav-home').addEventListener('click', function() { goTo('home'); });
-  document.getElementById('nav-research').addEventListener('click', function() { goTo('research'); });
-  document.getElementById('nav-stats').addEventListener('click', function() { goTo('stats'); });
-  document.getElementById('nav-about').addEventListener('click', function() { goTo('about'); });
+  document.querySelectorAll('.nav-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() { goTo(btn.getAttribute('data-section')); });
+  });
   document.getElementById('btn-research').addEventListener('click', function() { goTo('research'); });
   document.getElementById('btn-stats').addEventListener('click', function() { goTo('stats'); });
 
